@@ -1,7 +1,7 @@
 import { ICharacterRepository } from '@ficha/domain/ICharacterRepository'
 import { Character } from '@ficha/domain/Character'
 import { CharacterInfo } from '@ficha/domain/CharacterInfo'
-import { Result, fail } from '@shared/domain/Result'
+import { Result, ok, fail } from '@shared/domain/Result'
 import { toResponseDTO, CharacterResponseDTO } from './CharacterMapper'
 
 export interface CreateCharacterDTO {
@@ -28,6 +28,6 @@ export class CreateCharacter {
 
     const character = Character.create(infoResult.value, dto.ownerId)
     await this.repo.save(character)
-    return { ok: true, value: toResponseDTO(character), isOk: () => true, isFail: () => false, map: (fn: any) => ({ ok: true, value: fn(toResponseDTO(character)), isOk: () => true, isFail: () => false, map: (f: any) => f(toResponseDTO(character)) }) } as any
+    return ok(toResponseDTO(character))
   }
 }
